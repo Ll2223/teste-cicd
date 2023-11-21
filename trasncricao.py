@@ -25,8 +25,8 @@ def get_modified_yaml_files(username, repo_name, token):
         return None
 
 # Substitua 'LeoBGs1', 'app-cinema' e os.getenv('GH_TOKEN') pelos seus valores reais
-username = 'LeoBGs1'
-repo_name = 'app-cinema'
+username = 'Ll2223'
+repo_name = 'teste-cicd'
 token = os.getenv('GH_TOKEN')
 
 result = get_modified_yaml_files(username, repo_name, token)
