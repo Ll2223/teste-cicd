@@ -45,5 +45,5 @@ jobs:
       with:
         name: updated-yaml-files
         path: |
-          $(for file in "${yaml_files[@]}"; do echo $file; done)
+          $(echo "${yaml_files[@]}")
       if: success()
