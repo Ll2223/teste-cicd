@@ -44,6 +44,6 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: updated-yaml-files
-        path: |
-          $(echo "${yaml_files[@]}")
+        path: ${{ yaml_files[@] }}
       if: success()
+
