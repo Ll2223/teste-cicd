@@ -17,6 +17,14 @@ jobs:
     
     - name: Checkout code
       uses: actions/checkout@v2
+    
+    - name: Get changed YAML files
+      id: yaml-files
+      run: |
+        pip install requests
+        export GH_TOKEN=${{ secrets.GH_TOKEN }}
+        files=$(python trasncricao.py)
+        echo "::set-output name=files::${files}"
 
     - name: Staging Environment Variables
       id: staging-env-vars
@@ -29,14 +37,6 @@ jobs:
       run: |
         echo "${{ env.DESTINO }}"
         echo "${DESTINO}"
-    
-    - name: Get changed YAML files
-      id: yaml-files
-      run: |
-        pip install requests
-        export GH_TOKEN=${{ secrets.GH_TOKEN }}
-        files=$(python trasncricao.py)
-        echo "::set-output name=files::${files}"
 
     - name: Replace with envsubst
       run: |
