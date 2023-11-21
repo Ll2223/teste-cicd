@@ -1,0 +1,22 @@
+# Ambiente: HML
+
+name: Job Parceria
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      INSTANCE_ID: ${{ env.JOB_PARCERIA_INSTANCE_ID }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Executar Job HML
+        run: echo "Executando Job HML com INSTANCE_ID=${INSTANCE_ID}"
