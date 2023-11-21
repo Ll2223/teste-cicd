@@ -44,5 +44,5 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: updated-yaml-files
-        path: |
-          ${{ steps.yaml-files.outputs.files }}
+        path: . # Este é o diretório onde os arquivos YAML modificados estão localizados
+      if: ${{ success() }}
