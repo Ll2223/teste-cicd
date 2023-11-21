@@ -1,0 +1,130 @@
+name: Process YAMLs 
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+
+  Deploy-DEV:
+
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+    
+    steps:
+    
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Staging Environment Variables
+      id: staging-env-vars
+      uses: raven-actions/environment-variables@v1.0.0
+      with:
+        github-token: ${{ secrets.TESTE_TOKEN }}
+        environment: dev
+
+    - name: Replace with envsubst
+      run: |
+        echo "${{ env.DESTINO }}"
+        echo "${DESTINO}"
+    
+    - name: Get changed YAML files
+      id: yaml-files
+      run: |
+        pip install requests
+        export GH_TOKEN=${{ secrets.GH_TOKEN }}
+        files=$(python trasncricao.py)
+        echo "::set-output name=files::${files}"
+
+    - name: Replace with envsubst
+      run: |
+        IFS=',' read -ra yaml_files <<< "${{ steps.yaml-files.outputs.files }}"
+        for file in "${yaml_files[@]}"; do
+          envsubst < $file | tee $file
+        done
+          
+        
+    # - name: Replace values in YAML files 
+    #   env:
+    #     INSTANCE_ID: ${{ vars.JOB_PARCERIA_INSTANCE_ID }}
+    #     AMBIENTE: ${{ vars.JOB_PARCERIA_AMBIENTE }} 
+    #     OWNER: ${{ vars.JOB_PARCERIA_OWNER }}  
+    #   run: |
+    #     IFS=',' read -ra yaml_files <<< "${{ steps.yaml-files.outputs.files }}"
+    #     for file in "${yaml_files[@]}"; do
+    #       sed -i "s/VALOR_INSTANCE_ID/$INSTANCE_ID/g" "$file"
+    #       sed -i "s/VALOR_DESTINO/${{ vars.DESTINO }}/g" "$file"
+    #       sed -i "s/VALOR_AMBIENTE/$AMBIENTE/g" "$file"
+    #       sed -i "s/VALOR_OWNER/$OWNER/g" "$file"
+    #       cat "$file"
+    #     done
+
+  Deploy-HML:
+
+    runs-on: ubuntu-latest
+    environment:
+      name: hml
+    
+    steps:
+    
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: Get changed YAML files
+      id: yaml-files
+      run: |
+        pip install requests
+        export GH_TOKEN=${{ secrets.GH_TOKEN }}
+        files=$(python trasncricao.py)
+        echo "::set-output name=files::${files}"
+        
+    - name: Replace values in YAML files 
+      env:
+        INSTANCE_ID: ${{ vars.JOB_PARCERIA_INSTANCE_ID }}
+        AMBIENTE: ${{ vars.JOB_PARCERIA_AMBIENTE }} 
+        OWNER: ${{ vars.JOB_PARCERIA_OWNER }}  
+      run: |
+        IFS=',' read -ra yaml_files <<< "${{ steps.yaml-files.outputs.files }}"
+        for file in "${yaml_files[@]}"; do
+          sed -i "s/VALOR_INSTANCE_ID/$INSTANCE_ID/g" "$file"
+          sed -i "s/VALOR_DESTINO/${{ vars.DESTINO }}/g" "$file"
+          sed -i "s/VALOR_AMBIENTE/$AMBIENTE/g" "$file"
+          sed -i "s/VALOR_OWNER/$OWNER/g" "$file"
+          cat "$file"
+        done
+
+  Deploy-PRD:
+
+    runs-on: ubuntu-latest
+    environment:
+      name: prd
+    
+    steps:
+    
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: Get changed YAML files
+      id: yaml-files
+      run: |
+        pip install requests
+        export GH_TOKEN=${{ secrets.GH_TOKEN }}
+        files=$(python trasncricao.py)
+        echo "::set-output name=files::${files}"
+        
+    - name: Replace values in YAML files 
+      env:
+        INSTANCE_ID: ${{ vars.JOB_PARCERIA_INSTANCE_ID }}
+        AMBIENTE: ${{ vars.JOB_PARCERIA_AMBIENTE }} 
+        OWNER: ${{ vars.JOB_PARCERIA_OWNER }}  
+      run: |
+        IFS=',' read -ra yaml_files <<< "${{ steps.yaml-files.outputs.files }}"
+        for file in "${yaml_files[@]}"; do
+          sed -i "s/VALOR_INSTANCE_ID/$INSTANCE_ID/g" "$file"
+          sed -i "s/VALOR_DESTINO/${{ vars.DESTINO }}/g" "$file"
+          sed -i "s/VALOR_AMBIENTE/$AMBIENTE/g" "$file"
+          sed -i "s/VALOR_OWNER/$OWNER/g" "$file"
+          cat "$file"
+        done
