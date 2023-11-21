@@ -39,19 +39,3 @@ jobs:
         for file in "${yaml_files[@]}"; do
           envsubst < $file | tee $file
         done
-
-    - name: Create temporary directory
-      run: mkdir -p temp_yamls
-
-    - name: Copy modified YAML files to temporary directory
-      run: |
-        for file in "${yaml_files[@]}"; do
-          cp $file temp_yamls/
-        done
-
-    - name: Create artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: updated-yaml-files
-        path: temp_yamls
-      if: success()
