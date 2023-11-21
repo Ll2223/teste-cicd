@@ -15,8 +15,8 @@ def get_modified_yaml_files(username, repo_name, token):
     commit_response = requests.get(commit_url, headers=headers)
     files = commit_response.json()['files']
 
-    # Filtra os arquivos YAML
-    yaml_files = [file['filename'] for file in files if file['filename'].lower().endswith(('.yaml', '.yml'))]
+    # Filtra os arquivos YAML, excluindo os pipelines na pasta .github/workflows
+    yaml_files = [file['filename'] for file in files if file['filename'].lower().endswith(('.yaml', '.yml')) and '.github/workflows' not in file['filename']]
 
     # Retorna a lista separada por vírgulas
     if yaml_files:
