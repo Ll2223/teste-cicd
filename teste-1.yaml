@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      INSTANCE_ID: VALOR_INSTANCE_ID
-      AMBIENTE: VALOR_AMBIENTE
-      OWNER: VALOR_OWNER
+      INSTANCE_ID: ${INSTANCE_ID}
+      AMBIENTE: ${AMBIENTE}
+      OWNER: ${OWNER}
 
     steps:
       - name: Checkout Repository
