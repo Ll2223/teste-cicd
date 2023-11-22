@@ -1,0 +1,25 @@
+# Ambiente: DEVEEDOR
+
+name: Job Parceria
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      INSTANCE_ID: ${INSTANCE_ID}
+      AMBIENTE: ${AMBIENTE}
+      OWNER: ${OWNER}
+      URL: ${URL}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Executar Job DEV
+        run: echo "Executando Job DEV com INSTANCE_ID=${INSTANCE_ID}"
