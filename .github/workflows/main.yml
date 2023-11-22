@@ -1,4 +1,4 @@
-name: Implementation
+name: Request PipelineRundeck
 
 on:
   push:
@@ -6,38 +6,6 @@ on:
       - main
 
 jobs:
-  Deploy:
-    name: Deploy ${{ matrix.environment }}
-    strategy:
-      matrix:
-        environment: ["DEV", "HML", "PRD"]
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    environment: ${{ matrix.environment }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Get changed YAML files
-        id: yaml-files
-        run: |
-          pip install requests
-          export GH_TOKEN=${{ secrets.GH_TOKEN }}
-          files=$(python trasncricao.py)
-          echo "::set-output name=files::${files}"
-
-      - name: Staging Environment Variables
-        id: staging-env-vars
-        uses: raven-actions/environment-variables@v1.0.0
-        with:
-          github-token: ${{ secrets.GH_TOKEN }}
-          environment: ${{ matrix.environment }}
-
-      - name: Replace with envsubst
-        run: |
-          IFS=',' read -ra yaml_files <<< "${{ steps.yaml-files.outputs.files }}"
-          for file in "${yaml_files[@]}"; do
-            envsubst < $file | tee $file
-            cat $file
-          done
+  request-pipeline:
+    uses: ga-pipelines/.github/workflows/PipelineRundeck.yml@main
+    secrets: inherit
