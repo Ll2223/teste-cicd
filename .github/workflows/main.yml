@@ -27,12 +27,12 @@ jobs:
           files=$(python trasncricao.py)
           echo "::set-output name=files::${files}"
 
-      - name: Staging Environment Variables
-        id: staging-env-vars
-        uses: raven-actions/environment-variables@v1.0.0
-        with:
-          github-token: ${{ secrets.GH_TOKEN }}
-          environment: ${{ matrix.environment }}
+     # - name: Staging Environment Variables
+     #   id: staging-env-vars
+     #   uses: raven-actions/environment-variables@v1.0.0
+     #   with:
+     #     github-token: ${{ secrets.GH_TOKEN }}
+     #     environment: ${{ matrix.environment }}
 
       - name: Replace with envsubst
         run: |
