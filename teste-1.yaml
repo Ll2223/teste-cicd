@@ -15,6 +15,7 @@ jobs:
       INSTANCE_ID: ${INSTANCE_ID}
       AMBIENTE: ${AMBIENTE}
       OWNER: ${OWNER}
+      URL: ${URL}
 
     steps:
       - name: Checkout Repository
